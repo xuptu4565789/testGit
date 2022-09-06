@@ -30,10 +30,7 @@
         {
             this.lb_HI = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-<<<<<<< HEAD
             this.label2 = new System.Windows.Forms.Label();
-=======
->>>>>>> master
             this.SuspendLayout();
             // 
             // lb_HI
@@ -48,17 +45,13 @@
             // label1
             // 
             this.label1.AutoSize = true;
-<<<<<<< HEAD
             this.label1.Location = new System.Drawing.Point(145, 190);
-=======
             this.label1.Location = new System.Drawing.Point(171, 261);
->>>>>>> master
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(86, 18);
             this.label1.TabIndex = 0;
             this.label1.Text = "hello world";
             // 
-<<<<<<< HEAD
             // label2
             // 
             this.label2.AutoSize = true;
@@ -68,17 +61,12 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "hello world";
             // 
-=======
->>>>>>> master
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-<<<<<<< HEAD
             this.Controls.Add(this.label2);
-=======
->>>>>>> master
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lb_HI);
             this.Name = "Form1";
