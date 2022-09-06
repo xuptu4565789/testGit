@@ -30,6 +30,7 @@
         {
             this.lb_HI = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lb_HI
@@ -44,17 +45,28 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(145, 190);
             this.label1.Location = new System.Drawing.Point(171, 261);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(86, 18);
             this.label1.TabIndex = 0;
             this.label1.Text = "hello world";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(455, 143);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(86, 18);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "hello world";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lb_HI);
             this.Name = "Form1";
@@ -68,6 +80,7 @@
 
         private System.Windows.Forms.Label lb_HI;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 
