@@ -13,8 +13,12 @@ namespace HelloWorld
     {
         private int id = 5;
         private int group = 1;
+        private int numOfChannel = 4;
         public decimal[] CurrentArray = { 0, 0, 0, 0 };
         public decimal[] VoltageArray = { 0, 0, 0, 0 };
+        public decimal[] SettedVoltageArray = { 0, 0, 0, 0 };
+        public decimal[] Capabilties = { 5, 9, 12, 15, 20};
+
         private enum functionCode {
             write = 0x06,
             read = 0x03
@@ -48,15 +52,15 @@ namespace HelloWorld
         }
 
 
-        public void AddParameter()
+        public void AddParameter(object[] info)
         {
             if (!serialPort1.IsOpen)
             {
-                serialPort1.BaudRate = 115200;
-                serialPort1.PortName = "com12";
-                serialPort1.Parity = System.IO.Ports.Parity.None;
+                serialPort1.BaudRate = (int)info[1];
+                serialPort1.PortName = (string)info[0];
+                serialPort1.Parity = (System.IO.Ports.Parity)info[2];
                 serialPort1.DataBits = 8;
-                serialPort1.StopBits = System.IO.Ports.StopBits.One;
+                serialPort1.StopBits = (System.IO.Ports.StopBits)info[3];
                 serialPort1.WriteTimeout = 500;
                 serialPort1.ReadTimeout = 500;
             }
@@ -108,6 +112,11 @@ namespace HelloWorld
             }
         }
 
+        internal void AddParameter()
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetVoltageIndexForTypeC(int channel, int index)
         {
             var writeCommand = ((int)functionCode.write).ToString("X2");
@@ -120,11 +129,55 @@ namespace HelloWorld
             try
             {
                 serialPort1.Write(byteCommand, 0, byteCommand.Length);
+
+                //TODO: 如果沒有設定電壓需要重新設定
+                //Thread.Sleep(1000);
+                //ReadAllSettedTypeCVoltage();
             }
             catch (Exception e)
             {
                 Console.Write(e.Message);
             }
+        }
+
+        public void ReadAllSettedTypeCVoltage()
+        {
+            var readCommand = ((int)functionCode.read).ToString("X2");
+            var readAllSettedTypeCVoltage = "0A";
+            var commandData = "00000000";
+            string command = id.ToString("X2") + readCommand + group.ToString("X2") + readAllSettedTypeCVoltage + commandData;
+            var commandAddCRC = AddCRC(command);
+            byte[] byteCommand = StringToByteArray(commandAddCRC);
+            try
+            {
+                serialPort1.Write(byteCommand, 0, byteCommand.Length);
+                Thread.Sleep(20);
+                int length = serialPort1.BytesToRead;
+                byte[] byteRecieveData = new byte[length];
+                serialPort1.Read(byteRecieveData, 0, length);
+
+                int dataIndex = 4;
+                //int numOfChannel = 4;
+                int dataSize = 4;//4 Byte byteRecieveData[0]為一個byte
+                string recieve;
+
+                for (int channel = 0; channel < numOfChannel; channel++)
+                {
+                    recieve = "";
+                    for (int position = 0; position < dataSize; position++)
+                    {
+                        recieve += byteRecieveData[dataIndex + channel * numOfChannel + position].ToString("X2");
+                    }
+                    float value = FromHexString(recieve);
+                    SettedVoltageArray[channel] = decimal.Round((decimal)value, 4);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
         }
 
         public void ReadAllVoltageAndCurrent()
@@ -147,7 +200,7 @@ namespace HelloWorld
                 //data 38->byte index 5
                 int currentIndex = 12;//data31
                 int dataSize = 4;
-                int numOfChannel = 4;
+                //int numOfChannel = 4;
                 string recieve;
 
                 for (int channel = 0; channel < numOfChannel; channel++)
